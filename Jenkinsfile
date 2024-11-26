@@ -8,7 +8,7 @@ pipeline {
         }
         stage('Build') {
             steps {
-                sh 'mvn -f server/pom.xml clean package'
+                sh "${tool 'Maven 3.9.9'}/bin/mvn -f server/pom.xml clean package"
             }
         }
         stage('SonarQube Analysis') {
@@ -17,7 +17,7 @@ pipeline {
             }
             steps {
                 withSonarQubeEnv('sonarqube_server') { // 'SonarQube' là tên SonarQube server đã cấu hình trong Jenkins.
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=jobseeker -Dsonar.projectName="jobseeker"'
+                    sh "${tool 'Maven 3.9.9'}/bin/mvnmvn sonar:sonar -Dsonar.projectKey=jobseeker -Dsonar.projectName='jobseeker'"
                 }
             }
         }
