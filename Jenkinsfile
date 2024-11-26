@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                git branch: 'main', credentialsId: '1', url: 'https://github.com/navtuan12/Job-Seeker.git'
+                git branch: 'main', credentialsId: '1', url: 'https://github.com/YumieNC/clone-job-seeker.git'
             }
         }
         stage('Build') {
@@ -12,12 +12,16 @@ pipeline {
             }
         }
         stage('SonarQube Analysis') {
+            environment {
+                scannerHome = tool 'sonarqube_scanner' // Khai báo SonarQube Scanner
+            }
             steps {
-                withSonarQubeEnv('SonarQube') { // 'SonarQube' là tên SonarQube server đã cấu hình trong Jenkins.
-                    sh 'mvn sonar:sonar -Dsonar.projectKey=your-project-key -Dsonar.organization=your-organization-key'
+                withSonarQubeEnv('sonarqube_server') { // 'SonarQube' là tên SonarQube server đã cấu hình trong Jenkins.
+                    sh 'mvn sonar:sonar -Dsonar.projectKey=jobseeker -Dsonar.projectName="jobseeker"'
                 }
             }
         }
+        /*
         stage('Build and Push Docker Images (Optional)') {
             when {
                 expression { env.BRANCH_NAME == 'main' } // Chỉ build Docker image khi ở branch main
@@ -34,5 +38,6 @@ pipeline {
                 
             }
         }
+        */
     }
 }
