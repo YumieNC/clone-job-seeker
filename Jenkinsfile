@@ -6,9 +6,13 @@ pipeline {
                 git branch: 'main', credentialsId: '1', url: 'https://github.com/YumieNC/clone-job-seeker.git'
             }
         }
-        stage('Build') {
+        stage('Build & Test') {
             steps {
-                sh "${tool 'Maven 3.9.9'}/bin/mvn -f server/pom.xml clean package"
+                // sh "${tool 'Maven 3.9.9'}/bin/mvn -f server/pom.xml clean package"
+                sh 'docker-compose -f docker-compose.prod.yml up --build -d server'
+                sleep 15
+                sh "docker exec job-seeker-server-container mvn -f server/pom.xml test"
+                sh 'docker-compose -f docker-compose.prod.yml down'
             }
         }
         stage('SonarQube Analysis') {
