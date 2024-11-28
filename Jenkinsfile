@@ -22,12 +22,6 @@ pipeline {
         }
 
         stage('SonarQube Analysis') {
-            agent {
-                docker {
-                    image 'maven:3.9.2-eclipse-temurin-17'
-                    reuseNode true
-                }
-            }
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
                     withMaven(jdk: 'jdk17', maven: 'maven3') {
