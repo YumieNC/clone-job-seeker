@@ -17,14 +17,16 @@ pipeline {
 
         stage('Build Server') {
             steps {
-                sh 'mvn -f server/pom.xml clean package -DskipTests' // Xác định đường dẫn đến pom.xml
+                withMaven {
+                    sh 'mvn -f server/pom.xml clean package -DskipTests'
+                }
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    withMaven(jdk: 'jdk17', maven: 'maven3') {
+                    withMaven {
                         sh """
                             mvn -f server/pom.xml sonar:sonar \
                                 -Dsonar.projectKey=your-project-key \
