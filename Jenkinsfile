@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'jenkins-agent'
+            label 'docker-agent'
+            reuseNode true
+        }
+    }
     stages {
         stage('Install Docker Compose') {
             steps {
