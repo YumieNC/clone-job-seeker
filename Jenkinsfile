@@ -16,12 +16,6 @@ pipeline {
         }
 
         stage('Build Server') {
-            agent {
-                docker {
-                    image 'maven:3.9.2-eclipse-temurin-17'
-                    reuseNode true // Tái sử dụng node nếu có thể
-                }
-            }
             steps {
                 sh 'mvn -f server/pom.xml clean package -DskipTests' // Xác định đường dẫn đến pom.xml
             }
