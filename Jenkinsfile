@@ -40,7 +40,7 @@ pipeline {
                 }
             }
             steps {
-                withSonarQubeEnv(installationName: 'SonarQube') {
+                withSonarQubeEnv(installationName: 'sonarqube_server') {
                     withMaven(jdk: 'jdk17', maven: 'maven3') {
                         sh """
                             mvn -f server/pom.xml sonar:sonar \
