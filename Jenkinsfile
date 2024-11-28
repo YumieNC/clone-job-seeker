@@ -1,5 +1,10 @@
 pipeline {
-    agent any
+    agent {
+        dockerfile {
+            filename 'server/Dockerfile'
+            label 'main-agent'
+        }
+    }
 
     environment {
         // DOCKER_REGISTRY_URL = "https://index.docker.io/v1/"
