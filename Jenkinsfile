@@ -21,9 +21,9 @@ pipeline {
 
         stage('Build Server') {
             steps {
-                withMaven(maven: 'maven') {
-                    sh 'mvn -f server/pom.xml clean package -DskipTests'
-                }
+                
+                sh 'mvn -f server/pom.xml clean package -DskipTests'
+                
             }
         }
 
