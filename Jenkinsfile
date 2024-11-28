@@ -8,6 +8,10 @@ pipeline {
         CLIENT_PORT = 80
     }
 
+    tools {
+        maven 'maven'
+    }
+
     stages {
         stage('Checkout') {
             steps {
@@ -17,7 +21,7 @@ pipeline {
 
         stage('Build Server') {
             steps {
-                withMaven {
+                withMaven(maven: 'maven') {
                     sh 'mvn -f server/pom.xml clean package -DskipTests'
                 }
             }
@@ -26,7 +30,7 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    withMaven {
+                    withMaven (maven: 'maven'){
                         sh """
                             mvn -f server/pom.xml sonar:sonar \
                                 -Dsonar.projectKey=your-project-key \
