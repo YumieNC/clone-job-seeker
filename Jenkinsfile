@@ -30,16 +30,16 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    withMaven (maven: 'maven'){
-                        sh """
-                            mvn -f server/pom.xml sonar:sonar \
-                                -Dsonar.projectKey=your-project-key \
-                                -Dsonar.projectName=Your Project Name \
-                                -Dsonar.projectVersion=${env.BUILD_NUMBER} \
-                                -Dsonar.sources=./server/src \
-                                -Dsonar.java.binaries=./server/target/classes
-                        """
-                    }
+                    
+                sh """
+                    mvn -f server/pom.xml sonar:sonar \
+                        -Dsonar.projectKey=your-project-key \
+                        -Dsonar.projectName=Your Project Name \
+                        -Dsonar.projectVersion=${env.BUILD_NUMBER} \
+                        -Dsonar.sources=./server/src \
+                        -Dsonar.java.binaries=./server/target/classes
+                """
+                    
                 }
             }
         }
