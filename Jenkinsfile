@@ -28,14 +28,13 @@ pipeline {
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    def workspace = pwd()
                     sh """
                     mvn -f server/pom.xml sonar:sonar \
                         -Dsonar.projectKey=your-project-key \
                         -Dsonar.projectName=Your Project Name \
                         -Dsonar.projectVersion=${env.BUILD_NUMBER} \
-                        -Dsonar.sources=${workspace}/server/src \
-                        -Dsonar.java.binaries=${workspace}/server/target/classes
+                        -Dsonar.sources=src \
+                        -Dsonar.java.binaries=target/classes
                 """
                 }
             }
