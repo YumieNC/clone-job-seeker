@@ -29,6 +29,7 @@ pipeline {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
                     sh """
+                    pwd
                     mvn -f server/pom.xml sonar:sonar \
                         -Dsonar.projectKey=your-project-key \
                         -Dsonar.projectName=Your Project Name \
