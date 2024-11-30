@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // DOCKER_REGISTRY_URL = "https://index.docker.io/v1/"
-        SONAR_SERVER_URL = "http://localhost:9000" // Thay bằng URL SonarQube của bạn
+        SONAR_SERVER_URL = 'http://localhost:9000'
         SERVER_PORT = 8800
         CLIENT_PORT = 80
     }
@@ -21,17 +21,14 @@ pipeline {
 
         stage('Build Server') {
             steps {
-                
                 sh 'mvn -f server/pom.xml clean package -DskipTests'
-                
             }
         }
 
         stage('SonarQube Analysis') {
             steps {
                 withSonarQubeEnv(installationName: 'sonarqube_server') {
-                    
-                sh """
+                    sh """
                     mvn -f server/pom.xml sonar:sonar \
                         -Dsonar.projectKey=your-project-key \
                         -Dsonar.projectName=Your Project Name \
@@ -39,7 +36,6 @@ pipeline {
                         -Dsonar.sources=./server/src \
                         -Dsonar.java.binaries=./server/target/classes
                 """
-                    
                 }
             }
         }
@@ -70,7 +66,7 @@ pipeline {
                         def clientImage = docker.build("your-dockerhub-username/job-seeker-client:${env.BUILD_NUMBER}",
                                 "-f client/Dockerfile .") // Xác định Dockerfile và context
                         clientImage.push()
-                        //clientImage.push("latest")
+                    //clientImage.push("latest")
                     }
                 }
             }
@@ -82,7 +78,7 @@ pipeline {
                     image 'docker:latest'
                     reuseNode true
                     label 'docker-agent' // Sử dụng agent có label 'docker-agent' nếu bạn muốn chỉ định agent cụ thể
-                }
+                 }
             }
             steps {
                 echo "Deploying to production..."
@@ -93,8 +89,6 @@ pipeline {
                 """
                  //  sh "docker run -d -p ${SERVER_PORT}:${SERVER_PORT} --name job-seeker-server your-dockerhub-username/job-seeker-server:${env.BUILD_NUMBER}"
                  //  sh "docker run -d -p ${CLIENT_PORT}:${CLIENT_PORT} --name job-seeker-client your-dockerhub-username/job-seeker-client:${env.BUILD_NUMBER}"
-
-
 
             }
         }
