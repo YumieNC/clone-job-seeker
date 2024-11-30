@@ -33,8 +33,8 @@ pipeline {
                         -Dsonar.projectKey=your-project-key \
                         -Dsonar.projectName=Your Project Name \
                         -Dsonar.projectVersion=${env.BUILD_NUMBER} \
-                        -Dsonar.sources=./server/src \
-                        -Dsonar.java.binaries=./server/target/classes
+                        -Dsonar.sources=server/src \
+                        -Dsonar.java.binaries=server/target/classes
                 """
                 }
             }
