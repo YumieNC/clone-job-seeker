@@ -35,7 +35,7 @@ pipeline {
                         -Dsonar.projectName=Your Project Name \
                         -Dsonar.projectVersion=${env.BUILD_NUMBER} \
                         -Dsonar.sources=${workspace}/server/src \
-                        -Dsonar.java.binaries=${workspace}/sserver/target/classes
+                        -Dsonar.java.binaries=${workspace}/server/target/classes
                 """
                 }
             }
