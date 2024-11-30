@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         // DOCKER_REGISTRY_URL = "https://index.docker.io/v1/"
-        SONAR_SERVER_URL = 'http://localhost:9000'
+        SONAR_SERVER_URL = 'http://sonarqube:9000'
         SERVER_PORT = 8800
         CLIENT_PORT = 80
     }
