@@ -43,7 +43,7 @@ networks:
     driver: bridge
 
 volumes:
-  sonarqube_conf:
+  sonarqube_conf: 
   sonarqube_data:
   sonarqube_extensions:
   sonarqube_bundled-plugins:
