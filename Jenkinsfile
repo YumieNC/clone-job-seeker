@@ -42,31 +42,32 @@ pipeline {
                 }
             }
         }
-        /*
+        
         stage('Build and Push Docker Images') {
             agent {
                 docker {
-                    image 'docker:latest' // Sử dụng docker image để build và push
+                    image 'docker:latest'
                     reuseNode true
                 }
             }
             steps {
                 script {
-                    docker.withRegistry(env.DOCKER_REGISTRY_URL, 'docker-hub-credentials') {
-                        def serverImage = docker.build("your-dockerhub-username/job-seeker-server:${env.BUILD_NUMBER}",
-                                "-f server/Dockerfile .") // Xác định Dockerfile và context
-                        serverImage.push()
-                        //serverImage.push("latest")
+                    def harborUrl = "harbor.proj.nt548.com"
 
-                        def clientImage = docker.build("your-dockerhub-username/job-seeker-client:${env.BUILD_NUMBER}",
-                                "-f client/Dockerfile .") // Xác định Dockerfile và context
+                    def harborProject = "nt548proj"
+
+                    docker.withRegistry("https://$harborUrl", 'harbor-credentials') {
+                        def serverImage = docker.build("$harborUrl/$harborProject/job-seeker-server:${env.BUILD_NUMBER}", "-f server/Dockerfile .")
+                        serverImage.push()
+
+                        def clientImage = docker.build("$harborUrl/$harborProject/job-seeker-client:${env.BUILD_NUMBER}",
+                                "-f client/Dockerfile .")
                         clientImage.push()
-                    //clientImage.push("latest")
                     }
                 }
             }
         }
-
+        /* 
         stage('Deploy') {
             agent {
                  docker {
