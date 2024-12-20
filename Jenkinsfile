@@ -52,7 +52,7 @@ pipeline {
             }
             steps {
                 script {
-                    def harborUrl = "harbor.proj.nt548.com"
+                    def harborUrl = "registry.devnoneknow.online"
 
                     def harborProject = "nt548proj"
 
@@ -67,13 +67,11 @@ pipeline {
                 }
             }
         }
-        /* 
         stage('Deploy') {
             agent {
                  docker {
                     image 'docker:latest'
                     reuseNode true
-                    label 'docker-agent' // Sử dụng agent có label 'docker-agent' nếu bạn muốn chỉ định agent cụ thể
                  }
             }
             steps {
@@ -88,6 +86,5 @@ pipeline {
 
             }
         }
-        */
     }
 }
