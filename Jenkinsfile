@@ -13,6 +13,12 @@ pipeline {
     }
 
     stages {
+        stage('Check Docker') {
+            steps {
+                sh 'docker --version'
+            }
+        }
+
         stage('Checkout') {
             steps {
                 checkout scm
@@ -44,12 +50,12 @@ pipeline {
         }
         
         stage('Build and Push Docker Images') {
-            agent {
-                docker {
-                    image 'docker:latest'
-                    reuseNode true
-                }
-            }
+            // agent {
+            //     docker {
+            //         image 'docker:latest'
+            //         reuseNode true
+            //     }
+            // }
             steps {
                 script {
                     docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
