@@ -1,6 +1,6 @@
 services:
   jenkins:
-    image: jenkins/jenkins:lts
+    image: jenkins/jenkins:lts-jdk11-docker
     volumes:
        - jenkins_home:/var/jenkins_home
     networks:
