@@ -2,7 +2,11 @@ pipeline {
     agent any
 
     environment {
-        SONAR_SERVER_URL = 'http://sonarqube:9000'    }
+        SONAR_SERVER_URL = 'http://sonarqube:9000' 
+        HARBOR_URL = 'https://harbor.proj.nt548.com:443'
+        HARBOR_PROJECT = 'nt548proj'
+        HARBOR_CREDENTIALS = 'harbor-credentials'   
+        }
 
     tools {
         maven 'maven'
@@ -33,36 +37,31 @@ pipeline {
 
         stage('Quality Gate') {
             steps {
-                timeout(time: 30, unit: 'MINUTES') {
+                timeout(time: 10, unit: 'MINUTES') {
                     waitForQualityGate abortPipeline: true
                 }
             }
         }
         
-        // stage('Build and Push Docker Images') {
-        //     agent {
-        //         docker {
-        //             image 'docker:latest'
-        //             reuseNode true
-        //         }
-        //     }
-        //     steps {
-        //         script {
-        //             def harborUrl = "registry.devnoneknow.online"
+        stage('Build and Push Docker Images') {
+            agent {
+                docker {
+                    image 'docker:latest'
+                    reuseNode true
+                }
+            }
+            steps {
+                script {
+                    docker.withRegistry(env.HARBOR_URL, env.HARBOR_CREDENTIALS) {
+                        def serverImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-server:${env.BUILD_NUMBER}", "-f server/Dockerfile .")
+                        serverImage.push()
 
-        //             def harborProject = "nt548proj"
-
-        //             docker.withRegistry("https://$harborUrl", 'harbor-credentials') {
-        //                 def serverImage = docker.build("$harborUrl/$harborProject/job-seeker-server:${env.BUILD_NUMBER}", "-f server/Dockerfile .")
-        //                 serverImage.push()
-
-        //                 def clientImage = docker.build("$harborUrl/$harborProject/job-seeker-client:${env.BUILD_NUMBER}",
-        //                         "-f client/Dockerfile .")
-        //                 clientImage.push()
-        //             }
-        //         }
-        //     }
-        // }
+                        def clientImage = docker.build("${env.HARBOR_URL}/${env.HARBOR_PROJECT}/job-seeker-client:${env.BUILD_NUMBER}", "-f client/Dockerfile .")
+                        clientImage.push()
+                    }
+                }
+            }
+        }
         // stage('Deploy') {
         //     agent {
         //          docker {
